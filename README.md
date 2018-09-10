@@ -1,1 +1,1 @@
-# LJSearchExport
+Download select LJ blog journals and/or comments archived by LJSear.ch for local archival and indexing
