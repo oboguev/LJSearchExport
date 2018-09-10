@@ -100,7 +100,10 @@ public class Loader
             {
                 m = Pattern.compile("Найдено (\\d+) записи.*").matcher(text);
                 if (!m.matches())
-                    throw new Exception("Unexpected response page structure: missing the number of retrieved records");
+                    m = Pattern.compile("Найдена (\\d+) запись.*").matcher(text);
+                if (!m.matches())
+                    throw new Exception("Unexpected response page structure: missing the number of retrieved records: [" +
+                                        text + "]");
             }
             locatedRecords = Integer.parseInt(m.group(1));
         }

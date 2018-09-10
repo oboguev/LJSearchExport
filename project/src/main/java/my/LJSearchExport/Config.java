@@ -37,7 +37,7 @@ public class Config
     public static boolean ExportEntries = false;
 
     /* Time range (can be null for open range) */
-    public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2002, 3, 28);
+    public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2002, 9, 17);
     // public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2001, 6, 20);
     // public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2000, 1, 1);
     // public static YYYY_MM_DD StartTime = null;
