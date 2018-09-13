@@ -37,7 +37,7 @@ public class Config
     public static boolean ExportEntries = false;
 
     /* Time range (can be null for open range) */
-    public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2002, 9, 17);
+    public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2005, 12, 02);
     // public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2001, 6, 20);
     // public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2000, 1, 1);
     // public static YYYY_MM_DD StartTime = null;
@@ -50,7 +50,7 @@ public class Config
      * Files are saved as DownloadRoot/poster/journal/yyyy/mm/rid.html 
      *                 or DownloadRoot/poster/journal/yyyy/mm/rid_tid.html 
      */
-    public static String DownloadRoot = "F:\\WINAPPS\\LJSearchExport\\exported-journals";
+    public static String DownloadRoot = "E:\\@@\\LJSearchExport\\exported-journals";
     // public static String DownloadRoot = "R:";
     // public static String DownloadRoot = "F:\\@";
     // public static String DownloadRoot = "/home/sergey/LJSearchExport/exported-journals";

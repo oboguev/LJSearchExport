@@ -7,6 +7,7 @@ public class Main
         try
         {
             Config.init();
+            Avoid.init();
             Web.init();
             new Main().do_main();
             out("** Done.");

@@ -172,7 +172,10 @@ public class Loader
          * tid => "11408267" or blank
          */
         Element el = JSOUP.findSingleRequiredElementWithClass(flat, "a", "search-results__title");
-        URL url = new URL(JSOUP.getRequiredAttribute(el, "href"));
+        String href = JSOUP.getRequiredAttribute(el, "href");
+        if (Avoid.isAvoid(href))
+            return;
+        URL url = new URL(href);
         rid = url.getPath();
         if (!rid.startsWith("/") || !rid.endsWith(".html"))
             throw new Exception("Unexpected LJ record URL format");
@@ -263,20 +266,18 @@ public class Loader
     {
         Thread.sleep(Config.DelayBetweenRequests);
         Web.Response r = Web.get("https://ljsear.ch" + savedcopy);
-        if (!r.isOK())
-            throw new Exception("Unable to read HTTP " + Web.getLastURL() + ", response code: " + r.code + ", reason: " + r.reason);
+        if (!processResponseFrame(r))
+            return;
 
-        Node root = JSOUP.parseHtml(r.body);
-
-        Element el = JSOUP.findSingleRequiredElementWithClass(JSOUP.flatten(root), "a", "saved-copy-header__original");
+        Element el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "a", "saved-copy-header__original");
         String href = JSOUP.getRequiredAttribute(el, "href");
 
         String title = null;
-        el = JSOUP.findSingleElementWithClass(JSOUP.flatten(root), "div", "article__title");
+        el = JSOUP.findSingleElementWithClass(pageFlat, "div", "article__title");
         if (el != null)
             title = el.text();
 
-        el = JSOUP.findSingleRequiredElementWithClass(JSOUP.flatten(root), "div", "article__main-text");
+        el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "div", "article__main-text");
 
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
