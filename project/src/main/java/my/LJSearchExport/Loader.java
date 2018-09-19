@@ -200,6 +200,8 @@ public class Loader
 
         el = JSOUP.findSingleRequiredElementWithClass(flat, "div", "search-results__info");
 
+        boolean comment;
+
         if (JSOUP.hasClass(el, "search-results__info_type_comment"))
         {
             /*
@@ -223,6 +225,7 @@ public class Loader
                 throw new Exception("Unexpected poster/jorunal information");
             poster = Util.despace(el1.ownText()).trim();
             journal = Util.despace(el2.ownText()).trim();
+            comment = true;
             if (!Config.ExportComments)
                 return;
             if (!Config.ExportCommentsInOwnJournal && poster.equals(journal))
@@ -247,11 +250,12 @@ public class Loader
 
             Element el2 = JSOUP.findSingleRequiredElementWithClass(JSOUP.flatten(el), "a", "search-results__person");
             journal = poster = Util.despace(el2.ownText()).trim();
+            comment = false;
             if (!Config.ExportEntries)
                 return;
         }
 
-        String filepath = makeFilePath();
+        String filepath = makeFilePath(comment);
         File file = new File(filepath);
 
         if (!Config.ReloadExisting && file.exists())
@@ -264,61 +268,79 @@ public class Loader
 
     private void downloadEntry(String filepath) throws Exception
     {
-        Thread.sleep(Config.DelayBetweenRequests);
-        Web.Response r = Web.get("https://ljsear.ch" + savedcopy);
-        if (!processResponseFrame(r))
-            return;
+        try
+        {
+            Thread.sleep(Config.DelayBetweenRequests);
+            Web.Response r = Web.get("https://ljsear.ch" + savedcopy);
+            if (!processResponseFrame(r))
+                return;
 
-        Element el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "a", "saved-copy-header__original");
-        String href = JSOUP.getRequiredAttribute(el, "href");
+            Element el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "a", "saved-copy-header__original");
+            String href = JSOUP.getRequiredAttribute(el, "href");
 
-        String title = null;
-        el = JSOUP.findSingleElementWithClass(pageFlat, "div", "article__title");
-        if (el != null)
-            title = el.text();
+            String title = null;
+            el = JSOUP.findSingleElementWithClass(pageFlat, "div", "article__title");
+            if (el != null)
+                title = el.text();
 
-        el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "div", "article__main-text");
+            el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "div", "article__main-text");
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-        sb.append("<html>");
-        sb.append("<head>");
-        sb.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">");
-        sb.append("<title></title>");
-        sb.append("</head>");
-        sb.append("<body>");
-        sb.append("<table width=\"100%\" cellspacing=\"2\" cellpadding=\"2\" border=\"0\">");
-        sb.append("<tbody>");
-        sb.append("<tr>");
-        sb.append("<td valign=\"top\" bgcolor=\"#f9f6e6\">Автор: <b>{author}</b> ");
-        sb.append("{time} Оригинал: ");
-        sb.append("<b><a href=\"{href-1}\">{href-2}</a></b>");
-        sb.append("</td></tr></tbody></table>");
-        sb.append("<h3>{article-header}</h3>");
-        sb.append("{article-body}");
-        sb.append("</body>");
-        sb.append("</html>");
+            StringBuilder sb = new StringBuilder();
+            sb.append("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+            sb.append("<html>");
+            sb.append("<head>");
+            sb.append("<meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\">");
+            sb.append("<title></title>");
+            sb.append("</head>");
+            sb.append("<body>");
+            sb.append("<table width=\"100%\" cellspacing=\"2\" cellpadding=\"2\" border=\"0\">");
+            sb.append("<tbody>");
+            sb.append("<tr>");
+            sb.append("<td valign=\"top\" bgcolor=\"#f9f6e6\">Автор: <b>{author}</b> ");
+            sb.append("{time} Оригинал: ");
+            sb.append("<b><a href=\"{href-1}\">{href-2}</a></b>");
+            sb.append("</td></tr></tbody></table>");
+            sb.append("<h3>{article-header}</h3>");
+            sb.append("{article-body}");
+            sb.append("</body>");
+            sb.append("</html>");
 
-        String html = sb.toString();
-        html = html.replace("{author}", escapeHtml4(poster));
-        html = html.replace("{time}", escapeHtml4(String.format("%04d-%02d-%02d %02d:%02d", yyyy, mm, dd, hh, minmin)));
-        html = html.replace("{href-1}", href);
-        html = html.replace("{href-2}", escapeHtml4(href));
-        html = html.replace("{article-header}", (title != null) ? title : "");
-        JSOUP.removeAttribute(el, "class");
-        JSOUP.removeAttribute(el, "style");
-        html = html.replace("{article-body}", el.outerHtml());
+            String html = sb.toString();
+            html = html.replace("{author}", escapeHtml4(poster));
+            html = html.replace("{time}", escapeHtml4(String.format("%04d-%02d-%02d %02d:%02d", yyyy, mm, dd, hh, minmin)));
+            html = html.replace("{href-1}", href);
+            html = html.replace("{href-2}", escapeHtml4(href));
+            html = html.replace("{article-header}", (title != null) ? title : "");
+            JSOUP.removeAttribute(el, "class");
+            JSOUP.removeAttribute(el, "style");
+            html = html.replace("{article-body}", el.outerHtml());
 
-        Util.writeToFileSafe(filepath, html);
+            Util.writeToFileSafe(filepath, html);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Error while loading https://ljsear.ch" + savedcopy, ex);
+        }
     }
 
-    private String makeFilePath() throws Exception
+    private String makeFilePath(boolean comment) throws Exception
     {
         StringBuilder sb = new StringBuilder(Config.DownloadRoot);
+
         if (!Config.DownloadRoot.endsWith(File.separator))
             sb.append(File.separator);
+
+        String xposter = poster;
+        if (Config.SeparateEntriesComments)
+        {
+            if (comment)
+                xposter += ".comments";
+            else
+                xposter += ".journal";
+        }
+
         sb.append(String.format("%s%s%s%s%04d%s%02d%s%s",
-                                poster, File.separator,
+                                xposter, File.separator,
                                 journal, File.separator,
                                 yyyy, File.separator,
                                 mm, File.separator,
