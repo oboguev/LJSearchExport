@@ -1,3 +1,6 @@
 /exported-journals/
 /workspace/
 /project/target/
+project\.settings\
+project\.classpath
+project\.project

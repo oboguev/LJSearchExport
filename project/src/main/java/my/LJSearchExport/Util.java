@@ -1,4 +1,4 @@
-package my.LJSearchExport;
+﻿package my.LJSearchExport;
 
 import java.util.*;
 import java.io.BufferedReader;
@@ -324,5 +324,9 @@ public class Util
         if (s == null || s.length() == 0)
             return new ArrayList<String>();
         return Arrays.asList(s.split(sep));
+    }
+
+    public static void noop()
+    {
     }
 }

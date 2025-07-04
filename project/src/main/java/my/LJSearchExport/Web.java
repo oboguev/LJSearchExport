@@ -1,4 +1,4 @@
-package my.LJSearchExport;
+﻿package my.LJSearchExport;
 
 import java.io.*;
 
@@ -116,10 +116,11 @@ public class Web
 
         HttpGet request = new HttpGet(url);
         setCommon(request);
-        CloseableHttpResponse response = httpClient.execute(request);
+        CloseableHttpResponse response = null;
 
         try
         {
+            response = httpClient.execute(request);
             r.code = response.getStatusLine().getStatusCode();
             r.reason = response.getStatusLine().getReasonPhrase();
             HttpEntity entity = response.getEntity();
@@ -156,9 +157,15 @@ public class Web
                 }
             }
         }
+        catch (Exception ex)
+        {
+            Util.noop();
+            throw ex;
+        }
         finally
         {
-            response.close();
+            if (null != null)
+                response.close();
         }
 
         return r;
