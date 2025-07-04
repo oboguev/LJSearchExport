@@ -3,7 +3,7 @@ package my.LJSearchExport;
 import java.io.File;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
@@ -15,7 +15,7 @@ import org.jsoup.nodes.Node;
 public class Loader
 {
     private Node pageRoot;
-    private Vector<Node> pageFlat;
+    private ArrayList<Node> pageFlat;
     int locatedRecords;
     int seenRecords = 0;
 
@@ -75,7 +75,7 @@ public class Loader
         if (seenRecords < locatedRecords)
         {
             String msg = String.format("For %s: located %d records, but seen only %d",
-                                       cdate.toString(), locatedRecords, seenRecords);
+                    cdate.toString(), locatedRecords, seenRecords);
             Main.err(msg);
             throw new Exception(msg);
         }
@@ -103,7 +103,7 @@ public class Loader
                     m = Pattern.compile("Найдена (\\d+) запись.*").matcher(text);
                 if (!m.matches())
                     throw new Exception("Unexpected response page structure: missing the number of retrieved records: [" +
-                                        text + "]");
+                            text + "]");
             }
             locatedRecords = Integer.parseInt(m.group(1));
         }
@@ -153,7 +153,7 @@ public class Loader
     private void processSearchEntries() throws Exception
     {
         Element el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "div", "search-results");
-        Vector<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "div", "search-results__item");
+        ArrayList<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "div", "search-results__item");
         if (vn.size() == 0)
             throw new Exception("Unexpected page structure: missing list of search results");
         for (Node n : vn)
@@ -164,7 +164,7 @@ public class Loader
     {
         seenRecords++;
 
-        Vector<Node> flat = JSOUP.flatten(n);
+        ArrayList<Node> flat = JSOUP.flatten(n);
 
         /*
          * Location URI, such as "1724043.html" or "1724043.html?thread=11408267"
@@ -215,13 +215,13 @@ public class Loader
             mm = Integer.parseInt(m.group(2));
             yyyy = 2000 + Integer.parseInt(m.group(3));
 
-            Vector<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "a", "search-results__person");
+            ArrayList<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "a", "search-results__person");
             if (vn.size() != 2)
                 throw new Exception("Unexpected poster/jorunal information");
             Element el1 = (Element) vn.get(0);
             Element el2 = (Element) vn.get(1);
             if (JSOUP.hasClass(el1, "search-results__person_post-author") ||
-                !JSOUP.hasClass(el2, "search-results__person_post-author"))
+                    !JSOUP.hasClass(el2, "search-results__person_post-author"))
                 throw new Exception("Unexpected poster/jorunal information");
             poster = Util.despace(el1.ownText()).trim();
             journal = Util.despace(el2.ownText()).trim();
@@ -340,11 +340,11 @@ public class Loader
         }
 
         sb.append(String.format("%s%s%s%s%04d%s%02d%s%s",
-                                xposter, File.separator,
-                                journal, File.separator,
-                                yyyy, File.separator,
-                                mm, File.separator,
-                                rid));
+                xposter, File.separator,
+                journal, File.separator,
+                yyyy, File.separator,
+                mm, File.separator,
+                rid));
         if (tid != null && tid.length() != 0)
             sb.append("_" + tid);
         sb.append(".html");

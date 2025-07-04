@@ -36,9 +36,9 @@ public class Util
         return s;
     }
 
-    public static Vector<String> sort(Set<String> set) throws Exception
+    public static ArrayList<String> sort(Set<String> set) throws Exception
     {
-        Vector<String> vs = new Vector<String>();
+        ArrayList<String> vs = new ArrayList<String>();
         for (String s : set)
             vs.add(s);
         Collections.sort(vs);
@@ -231,9 +231,9 @@ public class Util
         return min + random_gen.nextInt(max - min + 1);
     }
 
-    public static <T> Vector<T> randomize(Vector<T> vec) throws Exception
+    public static <T> ArrayList<T> randomize(ArrayList<T> vec) throws Exception
     {
-        Vector<T> res = new Vector<T>();
+        ArrayList<T> res = new ArrayList<T>();
 
         while (vec.size() > 1)
         {
@@ -267,15 +267,15 @@ public class Util
 
         path = relative_path(obj, path);
 
-        Class cls = null;
+        Class<?> cls = null;
         if (obj instanceof Class)
-            cls = (Class) obj;
+            cls = (Class<?>) obj;
         else
             cls = obj.getClass();
 
         try (InputStream ris = cls.getClassLoader().getResourceAsStream(path);
-             InputStreamReader isr = new InputStreamReader(ris, "UTF-8");
-             BufferedReader bufferedReader = new BufferedReader(isr))
+                InputStreamReader isr = new InputStreamReader(ris, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(isr))
         {
             while (null != (line = bufferedReader.readLine()))
             {
@@ -292,9 +292,9 @@ public class Util
 
     public static String relative_path(Object obj, String path) throws Exception
     {
-        Class cls = null;
+        Class<?> cls = null;
         if (obj instanceof Class)
-            cls = (Class) obj;
+            cls = (Class<?>) obj;
         else
             cls = obj.getClass();
 

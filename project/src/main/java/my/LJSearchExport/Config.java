@@ -15,14 +15,14 @@ public class Config
     /******************************/
 
     /*
-     * Name of the user whose records or comments are to be loaded.
+     * Name of the user whose records or comments are to be downloaded.
      * Can be null if loading all users. 
      */
     public static String User = "udod99";
 
     /*
-     * Name of the journal which records or comments are to be loaded.
-     * Can be null if loading records in all journals. 
+     * Name of the journal which records or comments are to be downloaded.
+     * Can be null if downloading records in all journals. 
      */
     public static String InJournal = null;
     // public static String InJournal = "udod99";
@@ -58,7 +58,7 @@ public class Config
      *     as {DownloadRoot}/{poster}.journal/{journal}/yyyy/mm/rid.html 
      *     or {DownloadRoot}/{poster}.comments/{journal}/yyyy/mm/rid_tid.html
      */
-    public static String DownloadRoot = "E:\\@@\\LJSearchExport\\exported-journals";
+    public static String DownloadRoot = "F:\\WINAPPS\\LJSearchExport\\exported-journals";
     // public static String DownloadRoot = "R:";
     // public static String DownloadRoot = "F:\\@";
     // public static String DownloadRoot = "/home/sergey/LJSearchExport/exported-journals";

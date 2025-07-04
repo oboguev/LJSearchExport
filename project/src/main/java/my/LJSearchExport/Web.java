@@ -10,7 +10,6 @@ import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.*;
 import org.apache.http.impl.conn.*;
-import org.apache.http.util.*;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.config.CookieSpecs;
 
