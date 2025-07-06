@@ -3,7 +3,7 @@ package my.LJSearchExport;
 import java.io.File;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
@@ -15,7 +15,7 @@ import org.jsoup.nodes.Node;
 public class Loader
 {
     private Node pageRoot;
-    private ArrayList<Node> pageFlat;
+    private List<Node> pageFlat;
     int locatedRecords;
     int seenRecords = 0;
 
@@ -153,7 +153,7 @@ public class Loader
     private void processSearchEntries() throws Exception
     {
         Element el = JSOUP.findSingleRequiredElementWithClass(pageFlat, "div", "search-results");
-        ArrayList<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "div", "search-results__item");
+        List<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "div", "search-results__item");
         if (vn.size() == 0)
             throw new Exception("Unexpected page structure: missing list of search results");
         for (Node n : vn)
@@ -164,7 +164,7 @@ public class Loader
     {
         seenRecords++;
 
-        ArrayList<Node> flat = JSOUP.flatten(n);
+        List<Node> flat = JSOUP.flatten(n);
 
         /*
          * Location URI, such as "1724043.html" or "1724043.html?thread=11408267"
@@ -215,7 +215,7 @@ public class Loader
             mm = Integer.parseInt(m.group(2));
             yyyy = 2000 + Integer.parseInt(m.group(3));
 
-            ArrayList<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "a", "search-results__person");
+            List<Node> vn = JSOUP.findElementsWithClass(JSOUP.flatten(el), "a", "search-results__person");
             if (vn.size() != 2)
                 throw new Exception("Unexpected poster/jorunal information");
             Element el1 = (Element) vn.get(0);

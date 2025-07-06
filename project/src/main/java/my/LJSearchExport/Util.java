@@ -36,9 +36,9 @@ public class Util
         return s;
     }
 
-    public static ArrayList<String> sort(Set<String> set) throws Exception
+    public static List<String> sort(Set<String> set) throws Exception
     {
-        ArrayList<String> vs = new ArrayList<String>();
+        List<String> vs = new ArrayList<String>();
         for (String s : set)
             vs.add(s);
         Collections.sort(vs);
@@ -231,9 +231,9 @@ public class Util
         return min + random_gen.nextInt(max - min + 1);
     }
 
-    public static <T> ArrayList<T> randomize(ArrayList<T> vec) throws Exception
+    public static <T> List<T> randomize(List<T> vec) throws Exception
     {
-        ArrayList<T> res = new ArrayList<T>();
+        List<T> res = new ArrayList<T>();
 
         while (vec.size() > 1)
         {

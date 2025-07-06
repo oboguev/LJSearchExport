@@ -23,14 +23,14 @@ public class DOM
         Main.out(s);
     }
 
-    static ArrayList<Node> flatten(Node el) throws Exception
+    static List<Node> flatten(Node el) throws Exception
     {
-        ArrayList<Node> vec = new ArrayList<Node>();
+        List<Node> vec = new ArrayList<Node>();
         flatten(vec, el);
         return vec;
     }
 
-    static void flatten(ArrayList<Node> vec, Node el) throws Exception
+    static void flatten(List<Node> vec, Node el) throws Exception
     {
         if (el == null)
             return;
@@ -112,10 +112,10 @@ public class DOM
         return xml;
     }
 
-    public static ArrayList<String> extractHrefs(String html) throws Exception
+    public static List<String> extractHrefs(String html) throws Exception
     {
-        ArrayList<String> vs = new ArrayList<String>();
-        ArrayList<Node> vnodes = flatten(parseHtmlAsXml(html));
+        List<String> vs = new ArrayList<String>();
+        List<Node> vnodes = flatten(parseHtmlAsXml(html));
 
         for (Node n : vnodes)
         {
@@ -132,27 +132,27 @@ public class DOM
         return vs;
     }
 
-    public static void removeElements(Node pageRoot, ArrayList<Node> pageFlat, String tagname, String an1, String av1)
+    public static void removeElements(Node pageRoot, List<Node> pageFlat, String tagname, String an1, String av1)
             throws Exception
     {
         if (pageFlat == null)
             pageFlat = flatten(pageRoot);
-        ArrayList<Node> vel = findElements(pageFlat, tagname, an1, av1);
+        List<Node> vel = findElements(pageFlat, tagname, an1, av1);
         removeElements(pageRoot, vel);
     }
 
-    public static void removeElements(Node pageRoot, ArrayList<Node> pageFlat, String tagname, String an1, String av1, String an2,
+    public static void removeElements(Node pageRoot, List<Node> pageFlat, String tagname, String an1, String av1, String an2,
             String av2) throws Exception
     {
         if (pageFlat == null)
             pageFlat = flatten(pageRoot);
-        ArrayList<Node> vel = findElements(pageFlat, tagname, an1, av1, an2, av2);
+        List<Node> vel = findElements(pageFlat, tagname, an1, av1, an2, av2);
         removeElements(pageRoot, vel);
     }
 
-    public static ArrayList<Node> findElements(ArrayList<Node> pageFlat, String tagname) throws Exception
+    public static List<Node> findElements(List<Node> pageFlat, String tagname) throws Exception
     {
-        ArrayList<Node> vel = new ArrayList<Node>();
+        List<Node> vel = new ArrayList<Node>();
 
         for (Node n : pageFlat)
         {
@@ -167,9 +167,9 @@ public class DOM
         return vel;
     }
 
-    public static ArrayList<Node> findElements(ArrayList<Node> pageFlat, String tagname, String an1, String av1) throws Exception
+    public static List<Node> findElements(List<Node> pageFlat, String tagname, String an1, String av1) throws Exception
     {
-        ArrayList<Node> vel = new ArrayList<Node>();
+        List<Node> vel = new ArrayList<Node>();
         Element el;
         String av;
 
@@ -192,11 +192,11 @@ public class DOM
         return vel;
     }
 
-    public static ArrayList<Node> findElements(ArrayList<Node> pageFlat, String tagname, String an1, String av1, String an2,
+    public static List<Node> findElements(List<Node> pageFlat, String tagname, String an1, String av1, String an2,
             String av2)
             throws Exception
     {
-        ArrayList<Node> vel = new ArrayList<Node>();
+        List<Node> vel = new ArrayList<Node>();
         Element el;
         String av;
 
@@ -223,7 +223,7 @@ public class DOM
         return vel;
     }
 
-    public static void removeElements(Node pageRoot, ArrayList<Node> vnodes) throws Exception
+    public static void removeElements(Node pageRoot, List<Node> vnodes) throws Exception
     {
         for (Node n : vnodes)
         {

@@ -93,22 +93,22 @@ public class JSOUP
         }
     }
 
-    public static ArrayList<Node> flattenChildren(Node el) throws Exception
+    public static List<Node> flattenChildren(Node el) throws Exception
     {
-        ArrayList<Node> vec = flatten(el);
+        List<Node> vec = flatten(el);
         if (vec.size() != 0 && vec.get(0) == el)
             vec.remove(0);
         return vec;
     }
 
-    public static ArrayList<Node> flatten(Node el) throws Exception
+    public static List<Node> flatten(Node el) throws Exception
     {
-        ArrayList<Node> vec = new ArrayList<Node>();
+        List<Node> vec = new ArrayList<Node>();
         flatten(vec, el, 0);
         return vec;
     }
 
-    private static void flatten(ArrayList<Node> vec, Node el, int level) throws Exception
+    private static void flatten(List<Node> vec, Node el, int level) throws Exception
     {
         if (el == null)
             return;
@@ -137,14 +137,14 @@ public class JSOUP
         return n.nextSibling();
     }
 
-    public static ArrayList<Node> findElements(Node root, String tagname) throws Exception
+    public static List<Node> findElements(Node root, String tagname) throws Exception
     {
         return findElements(flatten(root), tagname);
     }
 
-    public static ArrayList<Node> findElements(ArrayList<Node> pageFlat, String tagname) throws Exception
+    public static List<Node> findElements(List<Node> pageFlat, String tagname) throws Exception
     {
-        ArrayList<Node> vel = new ArrayList<Node>();
+        List<Node> vel = new ArrayList<Node>();
 
         for (Node n : pageFlat)
         {
@@ -159,9 +159,9 @@ public class JSOUP
         return vel;
     }
 
-    public static ArrayList<Node> findElements(ArrayList<Node> pageFlat, String tagname, String an1, String av1) throws Exception
+    public static List<Node> findElements(List<Node> pageFlat, String tagname, String an1, String av1) throws Exception
     {
-        ArrayList<Node> vel = new ArrayList<Node>();
+        List<Node> vel = new ArrayList<Node>();
         Element el;
         String av;
 
@@ -184,11 +184,11 @@ public class JSOUP
         return vel;
     }
 
-    public static ArrayList<Node> findElements(ArrayList<Node> pageFlat, String tagname, String an1, String av1, String an2,
+    public static List<Node> findElements(List<Node> pageFlat, String tagname, String an1, String av1, String an2,
             String av2)
             throws Exception
     {
-        ArrayList<Node> vel = new ArrayList<Node>();
+        List<Node> vel = new ArrayList<Node>();
         Element el;
         String av;
 
@@ -215,14 +215,14 @@ public class JSOUP
         return vel;
     }
 
-    public static ArrayList<Node> findElementsWithClass(Node root, String tagname, String cls) throws Exception
+    public static List<Node> findElementsWithClass(Node root, String tagname, String cls) throws Exception
     {
         return findElementsWithClass(flatten(root), tagname, cls);
     }
 
-    public static ArrayList<Node> findElementsWithClass(ArrayList<Node> pageFlat, String tagname, String cls) throws Exception
+    public static List<Node> findElementsWithClass(List<Node> pageFlat, String tagname, String cls) throws Exception
     {
-        ArrayList<Node> vel = new ArrayList<Node>();
+        List<Node> vel = new ArrayList<Node>();
         Element el;
 
         for (Node n : pageFlat)
@@ -254,9 +254,9 @@ public class JSOUP
         }
     }
 
-    public static Element findSingleElementWithClass(ArrayList<Node> pageFlat, String tagname, String cls) throws Exception
+    public static Element findSingleElementWithClass(List<Node> pageFlat, String tagname, String cls) throws Exception
     {
-        ArrayList<Node> vn = findElementsWithClass(pageFlat, tagname, cls);
+        List<Node> vn = findElementsWithClass(pageFlat, tagname, cls);
         if (vn.size() > 1)
             throw new Exception("Unexpected multiple elements in HTML page");
         if (vn.size() == 0)
@@ -265,7 +265,7 @@ public class JSOUP
             return (Element) vn.get(0);
     }
 
-    public static Element findSingleRequiredElementWithClass(ArrayList<Node> pageFlat, String tagname, String cls) throws Exception
+    public static Element findSingleRequiredElementWithClass(List<Node> pageFlat, String tagname, String cls) throws Exception
     {
         Element el = findSingleElementWithClass(pageFlat, tagname, cls);
         if (el == null)
@@ -299,11 +299,11 @@ public class JSOUP
         removeElementsWithClass(pageRoot, null, tagname, cls);
     }
 
-    public static void removeElementsWithClass(Node pageRoot, ArrayList<Node> pageFlat, String tagname, String cls) throws Exception
+    public static void removeElementsWithClass(Node pageRoot, List<Node> pageFlat, String tagname, String cls) throws Exception
     {
         if (pageFlat == null)
             pageFlat = flatten(pageRoot);
-        ArrayList<Node> vel = findElementsWithClass(pageFlat, tagname, cls);
+        List<Node> vel = findElementsWithClass(pageFlat, tagname, cls);
         removeElements(pageRoot, vel);
     }
 
@@ -312,12 +312,12 @@ public class JSOUP
         removeElements(pageRoot, null, tagname, an1, av1);
     }
 
-    public static void removeElements(Node pageRoot, ArrayList<Node> pageFlat, String tagname, String an1, String av1)
+    public static void removeElements(Node pageRoot, List<Node> pageFlat, String tagname, String an1, String av1)
             throws Exception
     {
         if (pageFlat == null)
             pageFlat = flatten(pageRoot);
-        ArrayList<Node> vel = findElements(pageFlat, tagname, an1, av1);
+        List<Node> vel = findElements(pageFlat, tagname, an1, av1);
         removeElements(pageRoot, vel);
     }
 
@@ -327,16 +327,16 @@ public class JSOUP
         removeElements(pageRoot, null, tagname, an1, av1, an2, av2);
     }
 
-    public static void removeElements(Node pageRoot, ArrayList<Node> pageFlat, String tagname, String an1, String av1, String an2,
+    public static void removeElements(Node pageRoot, List<Node> pageFlat, String tagname, String an1, String av1, String an2,
             String av2) throws Exception
     {
         if (pageFlat == null)
             pageFlat = flatten(pageRoot);
-        ArrayList<Node> vel = findElements(pageFlat, tagname, an1, av1, an2, av2);
+        List<Node> vel = findElements(pageFlat, tagname, an1, av1, an2, av2);
         removeElements(pageRoot, vel);
     }
 
-    public static void removeElements(Node pageRoot, ArrayList<Node> vnodes) throws Exception
+    public static void removeElements(Node pageRoot, List<Node> vnodes) throws Exception
     {
         for (Node n : vnodes)
         {
@@ -366,18 +366,18 @@ public class JSOUP
         }
     }
 
-    public static void dumpNodes(ArrayList<Node> vnodes, String prefix) throws Exception
+    public static void dumpNodes(List<Node> vnodes, String prefix) throws Exception
     {
         for (Node n : vnodes)
             dumpNode(n, prefix);
     }
 
-    public static void dumpNodesOffset(ArrayList<Node> vnodes) throws Exception
+    public static void dumpNodesOffset(List<Node> vnodes) throws Exception
     {
         dumpNodesOffset(vnodes, null);
     }
 
-    public static void dumpNodesOffset(ArrayList<Node> vnodes, String comment) throws Exception
+    public static void dumpNodesOffset(List<Node> vnodes, String comment) throws Exception
     {
         for (Node n : vnodes)
             dumpNodeOffset(n, comment);
@@ -431,16 +431,16 @@ public class JSOUP
         dumpNode(n, sb.toString());
     }
 
-    public static ArrayList<String> extractHrefs(String html) throws Exception
+    public static List<String> extractHrefs(String html) throws Exception
     {
         Node rootNode = parseHtml(html);
         return extractHrefs(rootNode);
     }
 
-    public static ArrayList<String> extractHrefs(Node root) throws Exception
+    public static List<String> extractHrefs(Node root) throws Exception
     {
-        ArrayList<String> vs = new ArrayList<String>();
-        ArrayList<Node> vnodes = flatten(root);
+        List<String> vs = new ArrayList<String>();
+        List<Node> vnodes = flatten(root);
 
         for (Node n : vnodes)
         {
