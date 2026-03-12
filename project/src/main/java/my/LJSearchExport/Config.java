@@ -18,7 +18,8 @@ public class Config
      * Name of the user whose records or comments are to be downloaded.
      * Can be null if loading all users. 
      */
-    public static String User = "udod99";
+    //public static String User = "udod99";
+    public static String User = "pioneer_lj";
 
     /*
      * Name of the journal which records or comments are to be downloaded.
@@ -31,21 +32,21 @@ public class Config
     public static boolean ExportComments = true;
 
     /* Export comments in poster's own journal? */
-    public static boolean ExportCommentsInOwnJournal = true;
+    public static boolean ExportCommentsInOwnJournal = false;
 
     /* Export main records */
-    public static boolean ExportEntries = true;
+    public static boolean ExportEntries = false;
 
     /* See the explanation in DownloadRoot below */
     public static boolean SeparateEntriesComments = true;
 
     /* Time range (can be null for open range) */
-    public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2005, 12, 3);
+    public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2002, 5, 10);
     // public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2001, 6, 20);
     // public static YYYY_MM_DD StartTime = new YYYY_MM_DD(2000, 1, 1);
     // public static YYYY_MM_DD StartTime = null;
-    public static YYYY_MM_DD EndTime = new YYYY_MM_DD(2008, 12, 1);
-    // public static YYYY_MM_DD EndTime = new YYYY_MM_DD(2017, 12, 31);
+    // public static YYYY_MM_DD EndTime = new YYYY_MM_DD(2008, 12, 1);
+    public static YYYY_MM_DD EndTime = new YYYY_MM_DD(2017, 12, 31);
     // public static YYYY_MM_DD EndTime = null;
 
     /*
